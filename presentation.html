@@ -39,25 +39,49 @@
           </p>
         </section>
 
+        <section data-markdown>
+            <script type="text/template">
+                    Correlation is not causation. 
+
+                    A big part of AI as we know it mainly exploits correlation/joint distribution. 
+
+                    Does causality really matter? 
+            </script>
+        </section>
+
         <section id="causal-inference">
-          <span class="text-muted">Making good decisions requires</span>
+          <span class="text-muted">Making good decisions and predictions requires</span>
           <h2>causal inference</h2>
           <p>
-            <span class="fragment">Umbrellas often appear just before it pours,</span>
-            <span class="fragment">but banning them will not stop the rain;</span>
-            <span class="fragment">it will just make everyone <mark>more wet</mark></span>
+            <span class="fragment">Americans and English eat a lot of fat food. There is a high rate of cardiovascular diseases in US and UK.</span><br/>
+            <span class="fragment">French eat a lot of fat food, but they have a low(er) rate of cardiovascular diseases.</span><br/>
+            <span class="fragment">Americans and English drink a lot of alcohol. There is a high rate of cardiovascular diseases in US and UK.</span><br/>
+            <span class="fragment">Italians drink a lot of alcohol but, again, they have a low(er) rate of cardiovascular diseases.</span>
           </p>
+          <p>
+            <span class="fragment">Conclusion? Eat and drink what you want. And you have a higher chance of getting a heart attack if you speak English! </span> <br/>
+           </p>
+        </section>
 
-          <aside class="notes">
-            - We want gather evidence for a causal link between a change and behaviour
-              - “By switching to B, we will cause more people to click ads or buy our product!”
-            - Correlation is not sufficient for supporting decision making
-              - Direction of effect is as important as showing there is a relation at all
-          </aside>
+        <section> 
+            <p>Drinking could help you live longer. According to a study, people who live to 90 or older often drink moderately.</p>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                - Causality allows us to predict the impact of a change.
+                    - Prediction of rain based on seeing umbrella is less useful than being able to <mark>forecast</mark> rain and weather <mark>modification</mark>.            
+                - <!-- .element: class="fragment" --> Causality provides is much more <mark>robust</mark> prediction than correlation. 
+                    - Correlation can easily disappear or reverse direction easily by switching from one dataset to another. It can also lead to total reversal as in Simpson's paradox.
+                    - A causal effect discovered from one population is more likely to still exist in another population. A drug works for American is more likely to be effective for French to some degree.
+                <aside class="notes">
+                    Heterogeneous treatment effect is more like secondary effect.
+                </aside>
+              </script>
         </section>
 
         <section id="app-rubin-full">
-          <h3>What we want to know <small>(Rubin Causal Model)</small></h3>
+          <h3>Counterfactual framework <small>(Rubin Causal Model)</small></h3>
           <rubin-model display_ate></rubin-model>
         </section>
 
@@ -65,11 +89,10 @@
           <span class="text-muted">The fundamental problem of</span>
           <h2>causal inference</h2>
           <ol>
-            <li class="fragment">We cannot sample the entire <mark>population</mark></li>
-            <li class="fragment">We cannot expose units to both treatments <mark>exclusively</mark></li>
-            <li class="fragment">We cannot directly observe <mark>underlying</mark> probabilities</li>
+            <li class="fragment">Missing Data: We cannot expose units to both treatments <mark>simultaneously</mark></li>
+            <li class="fragment">Noises: We don't directly observe <mark>underlying</mark> probabilities. Observations are noisy. </li>
+            <li class="fragment">Sampling: We don't observe everyone. Only a sample. </li>
           </ol>
-
           <aside class="notes">
             - Other potential, but unquantifiable, sources of uncertainty also exist
               - The population may change
@@ -86,24 +109,6 @@
           <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
         </section>
 
-        <section id="two-questions">
-          <span class="text-muted">We will try to answer two</span>
-          <h2>key questions</h2>
-          <ol>
-            <li class="fragment"><mark>Is there</mark> any causal effect?</li>
-            <li class="fragment">What is the <mark>size</mark> of the causal effect?</li>
-          </ol>
-          <p class="fragment text-muted">(If the size is non-zero, there is an effect.)</p>
-
-          <aside class="notes">
-            - Sometimes we will get “unlucky” in our randomization
-              - We might randomly put all the men in one group and all the women in the other
-              - We can estimate the likelihood of getting a particular result by chance using a test statistic
-            - Every randomization will likely give us a slightly different result
-              - Every time the experiment is repeated with new randomization, the averages will be different
-              - We can quantify an expected range of results using a confidence interval
-          </aside>
-        </section>
 
         <section id="app-rubin-ate">
           <h3>What randomization gives us <small>(Rubin Causal Model)</small></h3>
@@ -131,49 +136,14 @@
           </p>
 
           <aside class="notes">
-            - In expectation, the average of a random sample will approximate true mean of the population
+            - In expectation, the average of a random sample will approximate true mean of the population. i.e. Missing at random!
             - In expectation, the fraction of yes will approximate underlying probability
               - We do not need to observe the probabilities directly if we have the outcomes for individuals
             - In expectation, the difference between averages will give us the ATE
               - We do not need to measure the treatment effects of each individual participant
           </aside>
-        </section>
-
-        <section id="app-one-trial">
-          <h3>Up, down or neither?<small>(I don't know either)</small></h3>
-          <simulation v-bind:effect="Math.random() > 0.5 ? 0 : Math.random() > 0.5 ? 0.1 : -0.1" hide_guide display_observed_effect display_last_effect reveal_enabled></simulation>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
-        </section>
-
-        <!--
-        <section id="confidence-intervals">
-          <span class="text-muted">estimates are expected to fall</span>
-          <h2>within a range</h2>
-
-          <p>
-            The following statement is technically incorrect, but I'm not sure how to explain it better. :-/
-          </p>
-          <p>
-            <span class="fragment">Every randomization will assign treatment differently,</span>
-            <span class="fragment">so we can expect group averages to vary as well,</span>
-            <span class="fragment">but we can quantify the expected range of variation using a <mark>confidence interval</mark></span>
-          </p>
-
-          <aside class="notes">
-            - Every randomization will assign treatment differently
-              - If we were to repeat the same experiment, assignment would change
-              - As a result, we would expect group averages to vary as well
-            - We can quantify the expected range of variation using a confidence interval
-              - We can expect results to be between X and Y 95% of the times we repeat the experiment
-          </aside>
-        </section>
-        -->
-
+        </section>      
+     
         <section id="randomization">
           <span class="text-muted">Randomization ensures only three things can</span>
           <h2>explain a difference</h2>
@@ -183,13 +153,14 @@
             <li class="fragment"><mark>Pure chance</mark> resulted in a difference between the two groups unrelated to the treatment</li>
             <li class="fragment"><mark>Measurement error</mark> resulted in an unintended difference in results unrelated to user behaviour</li>
           </ol>
+          <p class="fragment">Statistical methods help separate causation from noises</p>
         </section>
 
         <section id="null-hypothesis">
           <span class="text-muted">We want to reject the</span>
           <h2>null hypothesis</h2>
           <p>
-            <span class="fragment">The <mark>null hypothesis</mark> assumes there is no treatment effect for any unit; any difference we observe is simply due to chance.</span>
+            <span class="fragment">The <mark>null hypothesis</mark> assumes average treatment effect is zero; any difference we observe is simply due to chance.</span>
           </p>
           <p>
             <span class="fragment">If we could reasonably rule out chance, we might reject the null and consider this to be evidence for the <mark>alternative hypothesis</mark>.</span>
@@ -211,11 +182,12 @@
             <span class="fragment">Assuming there is no effect, the p-value is the probability of seeing a particular result or more extreme by chance.</span>
           </p>
           <p>
-            <span class="fragment"><b>How likely is this result <mark>assuming the null is true</mark>?</b></span>
+            <span class="fragment"><b>How likely is this (or more extreme) result <mark>assuming the null is true</mark>?</b></span>
+            <span class="fragment"><b>Reject null if p-value is below a threshold.</b></span>
           </p>
         </section>
 
-        <section id="loaded-die">
+<!--         <section id="loaded-die">
           <span class="text-muted">Is this die</span>
           <h2>Fair?</h2>
           <p class="dice"><span class="fragment six">&#x2685</span><span class="fragment six">&#x2685</span><span class="fragment six">&#x2685</span></p>
@@ -229,13 +201,13 @@
             - We might argue that small odds support accepting an alternative explanation
               - For instance that the die is loaded, of that I can influence the result through telepathy
           </aside>
-        </section>
+        </section> -->
 
-        <section id="significance-threshold">
+<!--         <section id="significance-threshold">
           <span class="text-muted">We need to pick a</span>
           <h2>threshold</h2>
           <p>
-            <span class="fragment">One swallow does not a summer make, nor one fine day,</span>
+            <span class="fragment">One swallow does not make a summer, nor one fine day,</span>
             <span class="fragment">but how many swallows do we count before we pack away our umbrellas?</span>
           </p>
           <p>
@@ -247,9 +219,9 @@
               - We will have to decide at which point we will reject the idea that our result could be chance
               - At this point, we will accept the alternative hypothesis and argue there is a causal effect
           </aside>
-        </section>
+        </section> -->
 
-        <!--
+<!--         
         <section id="misinterpreted-p-value">
           <span class="text-muted">p-values are often<small>[2]</small></span>
           <h2>misinterpreted</h2>
@@ -269,16 +241,17 @@
             - Here are some incorrect statements from Steve Goodman’s A Dirty Dozen[2]
           </aside>
         </section>
-        -->
+         -->
 
         <section id="errors">
           <span class="text-muted">Two types of</span>
           <h2>errors</h2>
 
           <ol>
-            <li class="fragment"><mark>Type-I</mark> is the incorrect rejection of a true null hypothesis; <span class="fragment">we cried wolf when there was none</span></li>
-            <li class="fragment"><mark>Type-II</mark> is the failure to reject a false null hypothesis; <span class="fragment">we failed to detect a real effect</span></li>
+            <li class="fragment"><mark>Type-I (False Positive)</mark> is the incorrect rejection of a true null hypothesis; <span class="fragment">we cried wolf when there was none</span></li>
+            <li class="fragment"><mark>Type-II (False Negative)</mark> is the failure to reject a false null hypothesis; <span class="fragment">we failed to detect a real effect</span></li>
           </ol>
+          <p class = "fragment"> p-value is the Type-I error <b>assuming the null is true</b>;  <span class="fragment">the threshold we set for p-value controls Type-I error</span></p>
 
           <aside class="notes">
             - The result might simply not be that unlikely when assuming the null is true
@@ -290,6 +263,9 @@
           <simulation v-bind:effect="0.0" display_true_effect display_type_i reveal_enabled></simulation>
           <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
           <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
+          <aside class="notes">
+              - We select threshold to make it so
+            </aside>
         </section>
 
         <section id="app-type-ii">
@@ -304,7 +280,7 @@
           <h2>Statistical power</h2>
 
           <p>
-            <span class="fragment">Statistical power is the probability that the test <mark>correctly rejects</mark> the null hypothesis when the alternative hypothesis is true</span>
+            <span class="fragment">Statistical power is the probability that the test <mark>correctly rejects</mark> the null hypothesis when the alternative hypothesis is true. <br/>(1 - Type-I error rate)</span>
           </p>
           <p>
             <span class="fragment"><b>Two main things affect statistical power:</b></span>
@@ -326,38 +302,70 @@
           <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
         </section>
 
-        <section id="app-type-ii-3">
+<!--         <section id="app-type-ii-3">
           <h3>Repeating the same experiment <small>(More power!!)</small></h3>
           <simulation v-bind:effect="0.05" v-bind:n="4000" display_type_ii display_power reveal_enabled></simulation>
           <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
-        </section>
+        </section> -->
         <section id="app-type-ii-4">
             <h3>Repeating the same experiment <small>(More power from larger effect)</small></h3>
             <simulation v-bind:effect="0.1" v-bind:n="1000" display_type_ii display_power reveal_enabled></simulation>
             <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
           </section>
-        <section id="app-one-trial-2">
-          <h3>Up, down or neither?<small>(I don't know either)</small></h3>
-          <simulation v-bind:effect="Math.random() > 0.5 ? 0 : Math.random() > 0.5 ? 0.1 : -0.1" hide_guide display_observed_effect display_last_effect reveal_enabled></simulation>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="step"><small class="text-very-muted"><i class="glyphicon glyphicon-step-forward"></i></small></span>
-          <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
-        </section>
 
+          <section id="errors-mands">
+              <span class="text-muted">Another Two types of</span>
+              <h2>errors</h2>
+    
+              <ol>
+                <li class="fragment"><mark>Type-M (Magnitude)</mark> is the expected ratio between the estimated effect to the true effect given rejection of the null</li>
+                <li class="fragment"><mark>Type-S (Sign)</mark> is the probability that our estimate is of different sign than the true effect given rejection of the null </li>
+              </ol>
+            </section>
+        <section id="app-type-m">
+            <h3>Type-S and Type-M: moderate power</h3>
+            <simulation v-bind:effect="0.05" display_true_effect display_type_ii display_type_s display_type_m display_power reveal_enabled></simulation>
+            <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
+          </section>
+          <section id="app-type-s">
+            <h3>Type-S and Type-M: very low power</h3>
+            <simulation v-bind:effect="0.01" display_true_effect display_type_ii display_type_s display_type_m display_power reveal_enabled></simulation>
+            <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
+          </section>
+
+          <section id="app-type-m2">
+            <h3>Type-S and Type-M: high power</h3>
+            <simulation v-bind:effect="0.075" display_true_effect display_type_ii display_type_s display_type_m display_power reveal_enabled></simulation>
+            <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
+          </section>
+
+          <section id="app-type-m3">
+            <h3>Type-S and Type-M: very high power</h3>
+            <simulation v-bind:effect="0.1" display_true_effect display_type_ii display_type_s display_type_m display_power reveal_enabled></simulation>
+            <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
+          </section>
+          <section id="power2">
+            <span class="text-muted">The importance of</span>
+            <h2>Statistical power, AGAIN</h2>
+  
+            <p>
+              <p class="fragment">Type-M error always exist in NHST framework. Estimates is more likely to overestimate the true effect.</p> 
+              <p class="fragment">Type-M error could still be high for moderate power like 50%. Although still a fair chance to reject the null, the estimated effects are on average exaggerated by 50%. </p>
+              <p class="fragment">Type-M error is less severe for power above 80% </p>
+              <p class="fragment">Fortunately, Type-S error is very rare </p>
+            </p>
+            <p><small class="fragment">Jiannan Lu, Yixuan Qiu, Alex Deng 2018 "A note on type S/M errors in hypothesis testing"</small></p>
+            </section>
         <section id="protocol">
           <span class="text-muted">The importance of sticking to</span>
           <h2>Protocol</h2>
-
           <p>
             <span class="fragment">The methods described assume strict adherence to protocol;</span>
             <span class="fragment">violations of protocol such as <mark>peeking</mark> and <mark>multiple testing</mark> increase the type-I error rate</span>
           </p>
         </section>
 
-        <section id="app-dice">
+<!--         <section id="app-dice">
           <span class="text-muted">Can telekenisis influence</span>
           <h2>Three dice?</h2>
           <span class="fragment"><dice reveal_enabled></dice></span>
@@ -369,15 +377,15 @@
             <span class="fragment text-muted"><small>(Fair die; I still cheated)</small></span>
           </p>
         </section>
-
+ -->
         <section id="app-multiple-testing">
-          <h3>Repeating the same experiment <small>(Peeking twice)</small></h3>
+          <h3>Peeking twice</h3>
           <simulation v-bind:effect="0.00" v-bind:peek="2" display_true_effect display_type_i reveal_enabled></simulation>
           <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
         </section>
 
         <section id="app-multiple-testing-2">
-          <h3>Repeating the same experiment <small>(Peeking 100x)</small></h3>
+          <h3>Peeking 100x</h3>
           <simulation v-bind:effect="0.00" v-bind:peek="100" display_true_effect display_type_i reveal_enabled></simulation>
           <span class="fragment" data-method="toggle_repeat" trigger-hidden><small class="text-very-muted"><i class="glyphicon glyphicon-forward"></i></small></span>
         </section>
@@ -396,25 +404,8 @@
             </ul>
           </p>
           <div class="fragment">
-            <p>All these are possible<small>[4]</small>, but require protocol adjustments</p>
-            <p><small>[4] Alex Deng, Tianxi Li, Yu Guo 2014 “Statistical Inference in Two-Stage Online Controlled Experiments with Treatment Selection and Validation” WWW '14. 609–618.</small></p>
+            <p>All these require protocol adjustments</p>
           </div>
-        </section>
-
-        <section id="end">
-          <h1>Design <span class="title-divider">of</span> experiments</h1>
-          <p>Statistical foundations for causal inference</p>
-          <br />
-          <p>
-            <small>
-              <b>Lukas Vermeer</b> is <b>Senior Product Owner</b> for <b>Experimentation</b> at <b>Booking.com</b>
-            </small>
-          </p>
-          <p>
-            <small>
-              <a href="http://twitter.com/lukasvermeer" target="_blank">@lukasvermeer</a> &mdash; <a href="http://www.lukasvermeer.nl/ab-stats" target="_blank">lukasvermeer.nl/ab-stats</a>
-            </small>
-          </p>
         </section>
 
         <section id="references">
@@ -425,6 +416,7 @@
             <li><small>Goodman, Steve 2008. “A dirty dozen: twelve P-value misconceptions.” Seminars in Hematology, 45 (2008), pp. 135-140. (<a href="https://www.researchgate.net/publication/5272766_A_Dirty_Dozen_Twelve_P-Value_Misconceptions" target="_blank">link</a>)</small></li>
             <li><small>Kohavi, R., Longbotham, R., Sommerfield, D. et al. 2009 “Controlled experiments on the web: survey and practical guide” Data Min Knowl Disc (2009) 18: 140. (<a href="http://bit.ly/expSurvey" target="_blank">link</a>)</small></li>
             <li><small>Alex Deng, Tianxi Li, Yu Guo 2014 “Statistical Inference in Two-Stage Online Controlled Experiments with Treatment Selection and Validation” WWW '14. 609–618.(<a href="http://www.exp-platform.com/Documents/p609-deng.pdf" target="_blank">link</a>)</small></li>
+            <li><small>Jiannan Lu, Yixuan Qiu, Alex Deng 2018 "A note on type S/M errors in hypothesis testing"(<a href="https://psyarxiv.com/n53zs/download" target="_blank">link</a>)</small></li>
           </ol>
         </section>
       </div>
@@ -447,7 +439,13 @@
         slideNumber: 'c/t',
         transition: 'slide',
         dependencies: [
-          { src: 'reveal/plugin/notes/notes.js', async: true }
+        { src: 'reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+        // Interpret Markdown in <section> elements
+        { src: 'reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+
+        { src: 'reveal/plugin/notes/notes.js', async: true }
         ]
       });
 
@@ -465,9 +463,12 @@
       new Vue({ el: '#app-type-ii-2' });
       new Vue({ el: '#app-type-ii-3' });
       new Vue({ el: '#app-type-ii-4' });
+      new Vue({ el: '#app-type-m'});
+      new Vue({ el: '#app-type-m2'});
+      new Vue({ el: '#app-type-m3'});
+      new Vue({ el: '#app-type-s'});
       new Vue({ el: '#app-multiple-testing' });
       new Vue({ el: '#app-multiple-testing-2' });
-
       new Vue({ el: '#app-dice' });
 
       Reveal.addEventListener( 'fragmentshown', function( event ) {
@@ -488,6 +489,10 @@
         EventBus.$emit('fragmentMethod', { id: 'app-type-ii-2', method: 'toggle_repeat'});
         EventBus.$emit('fragmentMethod', { id: 'app-type-ii-3', method: 'toggle_repeat'});
         EventBus.$emit('fragmentMethod', { id: 'app-type-ii-4', method: 'toggle_repeat'});
+        EventBus.$emit('fragmentMethod', { id: 'app-type-m', method: 'toggle_repeat'});
+        EventBus.$emit('fragmentMethod', { id: 'app-type-s', method: 'toggle_repeat'});
+        EventBus.$emit('fragmentMethod', { id: 'app-type-m2', method: 'toggle_repeat'});
+        EventBus.$emit('fragmentMethod', { id: 'app-type-m3', method: 'toggle_repeat'});
         EventBus.$emit('fragmentMethod', { id: 'app-multiple-testing', method: 'toggle_repeat'});
         EventBus.$emit('fragmentMethod', { id: 'app-multiple-testing-2', method: 'toggle_repeat'});
         EventBus.$emit('fragmentMethod', { id: 'app-dice', method: 'toggle_repeat'});
